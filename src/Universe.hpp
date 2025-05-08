@@ -24,7 +24,19 @@ public:
         return planets.end();
     }
 
+    Planet& operator[](int i) {
+        return planets[i];
+    }
+    const Planet& operator[](int i) const {
+        return planets[i];
+    }
+
     void addPlanet(Planet planet);
+
+    sf::Vector2f acceleration(std::vector<Planet>::const_iterator iter) const;
+    sf::Vector2f acceleration(int i) const {
+        return acceleration(planets.begin() + i);
+    }
 
 private:
     std::vector<Planet> planets;
