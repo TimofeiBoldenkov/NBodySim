@@ -1,43 +1,45 @@
 #include <cmath>
 #include "Planet.hpp"
-#include "Vector2.hpp"
+#include "Vector2Utils.hpp"
 
-Planet::Planet(float mss, sf::Vector2f spd, float radius) 
-               : mass(mss), speed(spd), shape(radius)
+Planet::Planet(double mass_, const sf::Vector2<double>& speed_, const sf::Vector2<double>& position_, const sf::CircleShape& shape_)
+               : mass(mass_), speed(speed_), position(position_), shape(shape_)
 {
+    shape.setPosition(Vector2Utils::convert<float>(position_));
+    float radius = std::pow(mass_, 1.f/2) / 10;
+    shape.setRadius(radius);
     shape.setOrigin({radius, radius});
 }
 
-Planet::Planet(float mss, sf::Vector2f spd, sf::CircleShape shp) 
-               : mass(mss), speed(spd), shape(shp) {
-    shape.setOrigin({shp.getRadius(), shp.getRadius()});
-}
-
-void Planet::move(sf::Time time) 
+void Planet::update(const sf::Time& time) 
 {
-    shape.move(speed * time.asSeconds());
+    position += speed * static_cast<double>(time.asSeconds());
+    shape.setPosition(Vector2Utils::convert<float>(position));
 }
 
 void Planet::draw(sf::RenderWindow& window) const {
     window.draw(shape);
 }
 
-static sf::Vector2f displacement(const Planet& planet1, const Planet& planet2)
+void Planet::accelerate(const sf::Vector2<double>& acceleration, const sf::Time& time)
+{
+    speed += acceleration * static_cast<double>(time.asSeconds());
+}
+
+sf::Vector2<double> Planet::displacement(const Planet& planet1, const Planet& planet2)
 {
     return planet2.getPosition() - planet1.getPosition();
 }
 
-static float distance(const Planet& planet1, const Planet& planet2)
+double Planet::distance(const Planet& planet1, const Planet& planet2)
 {
-    return magnitude(displacement(planet1, planet2));
+    return Vector2Utils::magnitude(displacement(planet1, planet2));
 }
 
-sf::Vector2f Planet::forceOfGravity(const Planet& planet1, const Planet& planet2)
+sf::Vector2<double> Planet::forceOfGravity(const Planet& planet1, const Planet& planet2, double G)
 {
-    sf::Vector2f disp = displacement(planet1, planet2);
-    float forceMagnitude = planet1.getMass() * planet2.getMass() / std::pow(magnitude(disp), 2);
-    float k = std::sqrt(pow(forceMagnitude, 2) / (pow(disp.x, 2) + pow(disp.y, 2)));
-    sf::Vector2f forceVector = disp;
-    forceVector.x *= k;
-    forceVector.y *= k;
+    sf::Vector2<double> disp = displacement(planet1, planet2);
+    double forceMagnitude = G * planet1.getMass() * planet2.getMass() / std::pow(Vector2Utils::magnitude(disp), 2);
+
+    return Vector2Utils::directionalVector(forceMagnitude, disp);
 }

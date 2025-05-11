@@ -1,3 +1,5 @@
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 cmake_minimum_required(VERSION 3.25)
 project(CMakeSFMLProject LANGUAGES CXX)
 
@@ -13,7 +15,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp src/Planet.cpp src/Universe.cpp)
+add_executable(main src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp)
 target_link_libraries(main PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(main PRIVATE cxx_std_17)
 

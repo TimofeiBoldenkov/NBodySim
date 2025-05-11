@@ -6,7 +6,9 @@
 
 class Universe {
 public:
-    void move(sf::Time time);
+    Universe(double gravitationalConstant) : G(gravitationalConstant) { }
+
+    void update(const sf::Time& time);
     
     void draw(sf::RenderWindow& window) const;
 
@@ -31,15 +33,28 @@ public:
         return planets[i];
     }
 
-    void addPlanet(Planet planet);
+    const std::vector<Planet>& getPlanets() const {
+        return planets;
+    }
+    void setPlanets(const std::vector<Planet>& planets) {
+        this->planets = planets;
+    }
 
-    sf::Vector2f acceleration(std::vector<Planet>::const_iterator iter) const;
-    sf::Vector2f acceleration(int i) const {
+    void addPlanet(const Planet& planet);
+
+    sf::Vector2<double> forceOfGravity(std::vector<Planet>::const_iterator planet1, std::vector<Planet>::const_iterator planet2) const;
+    sf::Vector2<double> forceOfGravity(std::vector<Planet>::size_type planet1Iindex, std::vector<Planet>::size_type planet2Index) const {
+        return forceOfGravity(planets.begin() + planet1Iindex, planets.begin() + planet2Index);
+    }
+
+    sf::Vector2<double> acceleration(std::vector<Planet>::const_iterator iter) const;
+    sf::Vector2<double> acceleration(int i) const {
         return acceleration(planets.begin() + i);
     }
 
 private:
     std::vector<Planet> planets;
+    double G;
 };
 
 #endif
