@@ -20,7 +20,7 @@ public:
         return keys[key];
     }
     const KeyInfo& keyInfo(sf::Keyboard::Key key) const {
-        return keys[key];
+        return keys.at(key);
     }
 
 private:

@@ -15,7 +15,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp)
+add_executable(main src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp src/KeyboardHandler.cpp)
 target_link_libraries(main PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(main PRIVATE cxx_std_17)
 

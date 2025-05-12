@@ -69,7 +69,7 @@ int main()
                 window.setView(view);
             }
 
-            if (event.type == sf::Event::KeyPressed && event.type == sf::Event::KeyReleased) {
+            if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
                 keyboardHandler.update(event);
             }
 
@@ -77,21 +77,28 @@ int main()
                 window.close();
         }
 
-        const KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Right);
-        if (keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Right); keyInfo.pressed) {
             view.move(view.getSize().x * keyInfo.clock.restart().asSeconds() / 5, 0);
             window.setView(view);
         } 
-        if (pressed[sf::Keyboard::Key::Left]) {
-            view.move(-view.getSize().x * clocks[sf::Keyboard::Key::Left].restart().asSeconds() / 5, 0);
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Left); keyInfo.pressed) {
+            view.move(-view.getSize().x * keyInfo.clock.restart().asSeconds() / 5, 0);
             window.setView(view);
         } 
-        if (pressed[sf::Keyboard::Key::Up]) {
-            view.move(0, -view.getSize().x * clocks[sf::Keyboard::Key::Up].restart().asSeconds() / 5);
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Up); keyInfo.pressed) {
+            view.move(0, -view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
             window.setView(view);
         } 
-        if (pressed[sf::Keyboard::Key::Down]) {
-            view.move(0, view.getSize().x * clocks[sf::Keyboard::Key::Down].restart().asSeconds() / 5);
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Down); keyInfo.pressed) {
+            view.move(0, view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
+            window.setView(view);
+        }
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::F); keyInfo.pressed) {
+            view.zoom(1 + keyInfo.clock.restart().asSeconds());
+            window.setView(view);
+        }
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::C); keyInfo.pressed) {
+            view.zoom(1 - keyInfo.clock.restart().asSeconds());
             window.setView(view);
         }
 
