@@ -1,13 +1,13 @@
+#include <unordered_map>
 #include <iostream>
 #include "Universe.hpp"
 #include "utils.hpp"
+#include "KeyboardHandler.hpp"
 
 int main()
 {
     Universe universe(1000);
-    sf::Clock clock;
 
-    float minX, maxX, minY, maxY;
     int i = 0;
     while (std::cin) {
         std::string line;
@@ -45,19 +45,6 @@ int main()
 
             universe.addPlanet(Planet(mass, speed, position));
 
-            float radius = universe[i].getShape().getRadius();
-            if (i == 0) {
-                minX = position.x - radius;
-                maxX = position.x + radius;
-                minY = position.y - radius;
-                maxX = position.y + radius;
-            } else {
-                if (position.x - radius < minX) minX = position.x - radius;
-                else if (position.x + radius > maxX) maxX = position.x + radius;
-                if (position.y - radius < minY) minY = position.y - radius;
-                else if (position.y + radius > maxY) maxY = position.y + radius;
-            }
-
             i++;
         } catch (std::invalid_argument) {
             std::clog << "Invalid input. Please enter valid data." << std::endl;
@@ -66,13 +53,14 @@ int main()
 
     sf::VideoMode videoMode(1920, 1080);
     sf::RenderWindow window(videoMode, "Physical Simulation");
-    sf::View view(utils::viewForVideoMode({minX, minY, maxX - minX, maxY - minY}, videoMode));
+    sf::View view(utils::convenientView(universe, videoMode));
     view.zoom(2);
     window.setView(view);
-
+    
     const sf::Time kMinStep = sf::milliseconds(5);
+    KeyboardHandler keyboardHandler;
 
-    bool rightPressed = false;
+    universe.restartClock();
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -81,29 +69,34 @@ int main()
                 window.setView(view);
             }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                view.move(view.getSize().x * clock.getElapsedTime().asSeconds(), 0);
-                window.setView(view);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                view.move(-view.getSize().x * clock.getElapsedTime().asSeconds(), 0);
-                window.setView(view);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-                view.move(0, -view.getSize().x * clock.getElapsedTime().asSeconds());
-                window.setView(view);
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                view.move(0, view.getSize().x * clock.getElapsedTime().asSeconds());
-                window.setView(view);
+            if (event.type == sf::Event::KeyPressed && event.type == sf::Event::KeyReleased) {
+                keyboardHandler.update(event);
             }
 
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
-        if (clock.getElapsedTime() > kMinStep) {
-            universe.update(clock.restart());
+        const KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Right);
+        if (keyInfo.pressed) {
+            view.move(view.getSize().x * keyInfo.clock.restart().asSeconds() / 5, 0);
+            window.setView(view);
+        } 
+        if (pressed[sf::Keyboard::Key::Left]) {
+            view.move(-view.getSize().x * clocks[sf::Keyboard::Key::Left].restart().asSeconds() / 5, 0);
+            window.setView(view);
+        } 
+        if (pressed[sf::Keyboard::Key::Up]) {
+            view.move(0, -view.getSize().x * clocks[sf::Keyboard::Key::Up].restart().asSeconds() / 5);
+            window.setView(view);
+        } 
+        if (pressed[sf::Keyboard::Key::Down]) {
+            view.move(0, view.getSize().x * clocks[sf::Keyboard::Key::Down].restart().asSeconds() / 5);
+            window.setView(view);
+        }
+
+        if (universe.elapsedTime() > kMinStep) {
+            universe.update();
         }
 
         window.clear(sf::Color::Black);

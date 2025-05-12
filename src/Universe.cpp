@@ -17,6 +17,11 @@ void Universe::update(const sf::Time& time)
     }
 }
 
+void Universe::update()
+{
+    update(clock.restart());
+}
+
 void Universe::addPlanet(const Planet& planet)
 {
     planets.push_back(planet);
@@ -29,8 +34,6 @@ sf::Vector2<double> Universe::forceOfGravity(std::vector<Planet>::const_iterator
 
 sf::Vector2<double> Universe::acceleration(std::vector<Planet>::const_iterator planet) const
 {
-    // std::clog << "i: " << planet - planets.begin() << std::endl;
-
     sf::Vector2<double> force = {0, 0};
 
     for (std::vector<Planet>::const_iterator other = planets.begin(); other != planets.end(); other++) {
@@ -40,7 +43,5 @@ sf::Vector2<double> Universe::acceleration(std::vector<Planet>::const_iterator p
         force += forceOfGravity(planet, other);
     }
 
-    // std::clog << "force: " << Vector2Utils::magnitude(force) << std::endl;
-    // std::clog << "mass:  " << planet->getMass() << std::endl;
     return force / planet->getMass();
 }

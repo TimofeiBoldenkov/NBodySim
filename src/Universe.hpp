@@ -9,28 +9,19 @@ public:
     Universe(double gravitationalConstant) : G(gravitationalConstant) { }
 
     void update(const sf::Time& time);
-    
+    void update();
+
     void draw(sf::RenderWindow& window) const;
-
-    std::vector<Planet>::iterator begin() {
-        return planets.begin();
-    }
-    std::vector<Planet>::const_iterator begin() const {
-        return planets.begin();
-    }
-
-    std::vector<Planet>::iterator end() {
-        return planets.end();
-    }
-    std::vector<Planet>::const_iterator end() const {
-        return planets.end();
-    }
 
     Planet& operator[](int i) {
         return planets[i];
     }
     const Planet& operator[](int i) const {
         return planets[i];
+    }
+
+    std::vector<Planet>::size_type size() const {
+        return planets.size();
     }
 
     const std::vector<Planet>& getPlanets() const {
@@ -52,7 +43,17 @@ public:
         return acceleration(planets.begin() + i);
     }
 
+    sf::Time elapsedTime() const {
+        return clock.getElapsedTime();
+    }
+
+    void restartClock() {
+        clock.restart();
+    }
+
 private:
+    sf::Clock clock;
+
     std::vector<Planet> planets;
     double G;
 };

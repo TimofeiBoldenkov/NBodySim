@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Window/VideoMode.hpp>
+#include "Universe.hpp"
 
 namespace utils {
 
@@ -12,7 +13,7 @@ std::vector<std::string> split(const std::string& str);
 
 bool isSpace(std::string);
 
-sf::FloatRect viewForVideoMode(const sf::FloatRect& view, const sf::VideoMode& videoMode);
+sf::FloatRect convenientView(const Universe& universe, const sf::VideoMode& videoMode);
 
 }
 
