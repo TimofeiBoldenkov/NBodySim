@@ -70,9 +70,9 @@ int main()
     view.zoom(2);
     window.setView(view);
 
-    const sf::Time kMinStep = sf::milliseconds(10);
+    const sf::Time kMinStep = sf::milliseconds(5);
 
-    sf::Vector2<int> mouseStartPosition;
+    bool rightPressed = false;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -81,17 +81,20 @@ int main()
                 window.setView(view);
             }
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                mouseStartPosition.x = event.mouseMove.x;
-                mouseStartPosition.y = event.mouseMove.y;
-            }
-            if (event.type == sf::Event::MouseButtonReleased) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+                view.move(view.getSize().x * clock.getElapsedTime().asSeconds(), 0);
                 window.setView(view);
             }
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-                sf::Vector2<int> mouseEndPosition(event.mouseMove.x, event.mouseMove.y);
-                view.move((mouseEndPosition.x - mouseStartPosition.x) * view.getSize().x / videoMode.width,
-                          mouseEndPosition.y - mouseStartPosition.x * view.getSize().y / videoMode.height);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+                view.move(-view.getSize().x * clock.getElapsedTime().asSeconds(), 0);
+                window.setView(view);
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                view.move(0, -view.getSize().x * clock.getElapsedTime().asSeconds());
+                window.setView(view);
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                view.move(0, view.getSize().x * clock.getElapsedTime().asSeconds());
                 window.setView(view);
             }
 
