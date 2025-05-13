@@ -9,17 +9,13 @@ void Universe::draw(sf::RenderWindow& window) const
     }
 }
 
-void Universe::update(const sf::Time& time)
+void Universe::update(float timeFactor)
 {
+    sf::Time time = clock.restart();
     for (std::vector<Planet>::size_type i = 0; i < planets.size(); i++) {
-        planets[i].accelerate(acceleration(i), time);
-        planets[i].update(time);
+        planets[i].accelerate(acceleration(i), time * timeFactor);
+        planets[i].update(time * timeFactor);
     }
-}
-
-void Universe::update()
-{
-    update(clock.restart());
 }
 
 void Universe::addPlanet(const Planet& planet)

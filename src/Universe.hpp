@@ -8,8 +8,7 @@ class Universe {
 public:
     Universe(double gravitationalConstant) : G(gravitationalConstant) { }
 
-    void update(const sf::Time& time);
-    void update();
+    void update(float timeFactor = 1);
 
     void draw(sf::RenderWindow& window) const;
 

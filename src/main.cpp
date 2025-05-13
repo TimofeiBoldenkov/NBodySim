@@ -1,5 +1,7 @@
 #include <unordered_map>
 #include <iostream>
+#include <thread>
+#include <memory>
 #include "Universe.hpp"
 #include "utils.hpp"
 #include "KeyboardHandler.hpp"
@@ -51,16 +53,27 @@ int main()
         }
     }
 
-    sf::VideoMode videoMode(1920, 1080);
+    sf::VideoMode videoMode(1700, 900);
     sf::RenderWindow window(videoMode, "Physical Simulation");
     sf::View view(utils::convenientView(universe, videoMode));
     view.zoom(2);
     window.setView(view);
+    sf::View defaultView = window.getDefaultView();
     
+    float timeFactor = 1;
     const sf::Time kMinStep = sf::milliseconds(5);
     KeyboardHandler keyboardHandler;
 
+    sf::Font font;
+    font.loadFromFile(PROJECT_SOURCE_DIR "/resources/Roboto-Regular.ttf");
+    sf::Text timeFactorMessage("Time factor: " + std::to_string(timeFactor), font, videoMode.height / 50);
+    timeFactorMessage.setFillColor(sf::Color::White);
+    bool showTimeFactorMessage = false;
+
+    std::unique_ptr<std::thread> calculationThread;
+
     universe.restartClock();
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -88,7 +101,7 @@ int main()
         if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Up); keyInfo.pressed) {
             view.move(0, -view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
             window.setView(view);
-        } 
+        }
         if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Down); keyInfo.pressed) {
             view.move(0, view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
             window.setView(view);
@@ -101,14 +114,45 @@ int main()
             view.zoom(1 - keyInfo.clock.restart().asSeconds());
             window.setView(view);
         }
-
-        if (universe.elapsedTime() > kMinStep) {
-            universe.update();
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Z); keyInfo.pressed) {
+            timeFactor /= 1 + keyInfo.clock.restart().asSeconds();
+            showTimeFactorMessage = true;
+        }
+        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::X); keyInfo.pressed) {
+            timeFactor *= 1 + keyInfo.clock.restart().asSeconds();
+            showTimeFactorMessage = true;
         }
 
+        
+        if (universe.elapsedTime() > kMinStep) {
+            if (calculationThread)
+                calculationThread->join();
+            calculationThread = std::make_unique<std::thread>(&Universe::update, &universe, timeFactor);
+        }
+
+
         window.clear(sf::Color::Black);
+
+        if (showTimeFactorMessage) {
+            if (std::abs(timeFactor - 1) < 0.05) {
+                showTimeFactorMessage = false;
+            } else {
+                window.setView(defaultView);
+                timeFactorMessage.setString("Time factor: " + std::to_string(timeFactor));
+                const sf::FloatRect& viewport = defaultView.getViewport();
+                timeFactorMessage.setPosition({viewport.left, viewport.top});
+                window.draw(timeFactorMessage);
+                window.setView(view);
+            }
+        }
+
         universe.draw(window);
+
         window.display();
+    }
+
+    if (calculationThread) {
+        calculationThread->join();
     }
 
     return 0;

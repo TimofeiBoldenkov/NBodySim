@@ -15,14 +15,15 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(main src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp src/KeyboardHandler.cpp)
-target_link_libraries(main PRIVATE sfml-graphics sfml-window sfml-system)
-target_compile_features(main PRIVATE cxx_std_17)
+add_executable(simulation src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp src/KeyboardHandler.cpp)
+target_link_libraries(simulation PRIVATE sfml-graphics sfml-window sfml-system)
+target_compile_features(simulation PRIVATE cxx_std_17)
+add_compile_definitions(PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
     add_custom_command(
-        TARGET main
+        TARGET simulation
         COMMENT "Copy OpenAL DLL"
-        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:main>
+        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:simulation>
         VERBATIM)
 endif()
