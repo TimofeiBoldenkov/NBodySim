@@ -8,32 +8,34 @@
 
 int main()
 {
+    // Create a Universe with G = 1000.
+    // The higher G is, the faster planets move.
     Universe universe(1000);
 
-    int i = 0;
+    int i = 0; // The number of planets added so far
     while (std::cin) {
-        std::string line;
-        std::vector<std::string> words;
+        std::string line; // A line of the user's input
+        std::vector<std::string> words; // The line split into words.
 
         try {
             std::cout << "Mass of planet " << i + 1 << " (leave blank if you don't want to add any new planets): ";
             std::getline(std::cin, line);
+            // Stop reading input if the line contains only the space characters.
             if (utils::isSpace(line))
                 break;
-            
             if ((words = utils::split(line)).size() != 1) {
                 throw std::invalid_argument("improper number of arguments");
             }
             double mass = std::stod(words[0]);
 
-            std::cout << "Speed of planet " << i + 1 << " (x y): ";
+            std::cout << "Velocity of planet " << i + 1 << " (x y): ";
             std::getline(std::cin, line);
             if ((words = utils::split(line)).size() != 2) {
                 throw std::invalid_argument("improper number of arguments");
             }
-            sf::Vector2<double> speed;
-            speed.x = std::stod(words[0]);
-            speed.y = std::stod(words[1]);
+            sf::Vector2<double> velocity;
+            velocity.x = std::stod(words[0]);
+            velocity.y = std::stod(words[1]);
 
 
             std::cout << "Position of planet " << i + 1 << " (x y): ";
@@ -45,7 +47,7 @@ int main()
             position.x = std::stod(words[0]);
             position.y = std::stod(words[1]);
 
-            universe.addPlanet(Planet(mass, speed, position));
+            universe.addPlanet(Planet(mass, velocity, position));
 
             i++;
         } catch (std::invalid_argument) {

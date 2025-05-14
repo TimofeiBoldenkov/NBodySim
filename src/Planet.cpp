@@ -2,18 +2,18 @@
 #include "Planet.hpp"
 #include "Vector2Utils.hpp"
 
-Planet::Planet(double mass_, const sf::Vector2<double>& speed_, const sf::Vector2<double>& position_, const sf::CircleShape& shape_)
-               : mass(mass_), speed(speed_), position(position_), shape(shape_)
+Planet::Planet(double mass_, const sf::Vector2<double>& velocity_, const sf::Vector2<double>& position_, const sf::CircleShape& shape_)
+               : mass(mass_), velocity(velocity_), position(position_), shape(shape_)
 {
     shape.setPosition(Vector2Utils::convert<float>(position_));
-    float radius = std::pow(mass_, 1.f/2) / 10;
+    float radius = std::pow(std::abs(mass_), 1.f/2) / 10;
     shape.setRadius(radius);
     shape.setOrigin({radius, radius});
 }
 
 void Planet::update(const sf::Time& time) 
 {
-    position += speed * static_cast<double>(time.asSeconds());
+    position += velocity * static_cast<double>(time.asSeconds());
     shape.setPosition(Vector2Utils::convert<float>(position));
 }
 
@@ -23,7 +23,7 @@ void Planet::draw(sf::RenderWindow& window) const {
 
 void Planet::accelerate(const sf::Vector2<double>& acceleration, const sf::Time& time)
 {
-    speed += acceleration * static_cast<double>(time.asSeconds());
+    velocity += acceleration * static_cast<double>(time.asSeconds());
 }
 
 sf::Vector2<double> Planet::displacement(const Planet& planet1, const Planet& planet2)
