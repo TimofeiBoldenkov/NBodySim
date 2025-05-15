@@ -6,7 +6,7 @@ Planet::Planet(double mass_, const sf::Vector2<double>& velocity_, const sf::Vec
                : mass(mass_), velocity(velocity_), position(position_), shape(shape_)
 {
     shape.setPosition(Vector2Utils::convert<float>(position_));
-    float radius = std::pow(std::abs(mass_), 1.f/2) / 10;
+    float radius = std::pow(std::abs(mass_), 1.f/3) / 3;
     shape.setRadius(radius);
     shape.setOrigin({radius, radius});
 }

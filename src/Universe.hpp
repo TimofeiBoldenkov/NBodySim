@@ -53,10 +53,17 @@ public:
         return forceOfGravity(planets.begin() + planet1Iindex, planets.begin() + planet2Index);
     }
 
+    // Returns the force acting on the Planet specified by its iterator since the last update() call
+    sf::Vector2<double> force(std::vector<Planet>::const_iterator) const;
+    // Returns the force acting on the Planet specified by its iterator since the last update() call
+    sf::Vector2<double> force(std::vector<Planet>::size_type i) const {
+        return force(planets.begin() + i);
+    }
+
     // Returns the acceleration of the Planet specified by its iterator since the last update() call
     sf::Vector2<double> acceleration(std::vector<Planet>::const_iterator iter) const;
     // Returns the acceleration of the Planet specified by its index since the last update() call
-    sf::Vector2<double> acceleration(int i) const {
+    sf::Vector2<double> acceleration(std::vector<Planet>::size_type i) const {
         return acceleration(planets.begin() + i);
     }
 

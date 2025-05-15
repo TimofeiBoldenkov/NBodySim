@@ -19,6 +19,7 @@ bool isSpace(std::string);
 
 // Returns a sf::FloatRect representing a view that includes all planets in the given Universe
 // and fits within the given sf::VideoMode without distortion.
+// If the universe occupies no space, returns {{0, 0}, {videoMode.width, videoMode.height}}.
 sf::FloatRect convenientView(const Universe& universe, const sf::VideoMode& videoMode);
 
 }

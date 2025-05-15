@@ -7,13 +7,14 @@
 // Represents a planet, which has mass, velocity, position and a visual representation using sf::CircleShape.
 // Although sf::CircleShape contains its own position (as sf::Vector2<float>),
 // the Planet class maintains a separate position stored as sf::Vector2<double> for higher precision.
-// All physics calculations (e.g., motion, collisions) are performed using double precision.
+// All physics calculations are performed using double precision.
 // The CircleShape is used solely for rendering purposes and is updated to match the precise position.
 class Planet {
 public:
     // Creates a Planet object from mass, velocity, position, and shape.
     // The default CircleShape constructor is called if the user hasn't specified a shape.
     // The position contained in the provided shape does not affect the position of the new Planet object.
+    // Radius = mass ** (1/3) / 3 by default
     Planet(double mass, const sf::Vector2<double>& velocity, const sf::Vector2<double>& position, const sf::CircleShape& shape = sf::CircleShape());
 
     // Draws the Planet to the specified sf::RenderWindow.
