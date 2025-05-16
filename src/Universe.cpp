@@ -37,14 +37,14 @@ sf::Vector2<double> Universe::force(std::vector<Planet>::const_iterator planet) 
 
 sf::Vector2<double> Universe::acceleration(std::vector<Planet>::const_iterator planet) const
 {
-    // Get the acceleration from the force acting on the Planet and the Planet's mass.
+    // Get the acceleration from the force acting on the Planet and the Planet's mass
     // Newton's second law of motion: F = m * a => a = F / m
     return force(planet) / planet->getMass();
 }
 
 void Universe::update(float timeFactor)
 {
-    sf::Time time = clock.restart();
+    sf::Time time = clock.restart(); // clock.restart() returns the time elapsed since the last restart() call.
     for (std::vector<Planet>::size_type i = 0; i < planets.size(); i++) {
         planets[i].accelerate(acceleration(i), time * timeFactor); // Accelerate all the planets.
         planets[i].update(time * timeFactor); // Move all the planets according to the new speed.

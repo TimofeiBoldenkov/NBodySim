@@ -54,24 +54,26 @@ namespace
     // Returns a rectangle that includes all planets in the universe
     sf::FloatRect coveringRect(const Universe& universe)
     {
-        float minX, maxX, minY, maxY;
+        float minX = 0, maxX = 0, minY = 0, maxY = 0;
+
+        if (universe.size() > 0) {
+            sf::Vector2f position = Vector2Utils::convert<float>(universe[0].getPosition());
+            float radius = universe[0].getShape().getRadius();
+
+            minX = position.x - radius;
+            maxX = position.x + radius;
+            minY = position.y - radius;
+            maxY = position.y + radius;
+        }
 
         for (int i = 0; i < universe.size(); i++) {
             sf::Vector2f position = Vector2Utils::convert<float>(universe[i].getPosition());
             float radius = universe[i].getShape().getRadius();
             
-            // If this is the first planet
-            if (i == 0) {
-                minX = position.x - radius;
-                maxX = position.x + radius;
-                minY = position.y - radius;
-                maxY = position.y + radius;
-            } else {
-                if (position.x - radius < minX) minX = position.x - radius;
-                else if (position.x + radius > maxX) maxX = position.x + radius;
-                if (position.y - radius < minY) minY = position.y - radius;
-                else if (position.y + radius > maxY) maxY = position.y + radius;
-            }
+            if (position.x - radius < minX) minX = position.x - radius;
+            else if (position.x + radius > maxX) maxX = position.x + radius;
+            if (position.y - radius < minY) minY = position.y - radius;
+            else if (position.y + radius > maxY) maxY = position.y + radius;
         }
 
         return sf::FloatRect({minX, minY}, {maxX - minX, maxY - minY});
