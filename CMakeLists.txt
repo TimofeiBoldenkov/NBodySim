@@ -7,17 +7,37 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.5.1
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM)
-FetchContent_MakeAvailable(SFML)
 
-add_executable(simulation src/main.cpp src/Planet.cpp src/Universe.cpp src/utils.cpp src/KeyboardHandler.cpp)
+OPTION(USE_SYSTEM_SFML "Use system Catch2 if possible" ON)
+find_package(SFML 2.5 COMPONENTS system window graphics QUIET)
+if (SFML_FOUND AND USE_SYSTEM_SFML)
+    message(STATUS "Using system SFML")
+else()
+    message(STATUS "Fetching SFML from GitHub...")
+    FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 2.5.1
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM
+    )
+    FetchContent_MakeAvailable(SFML)
+endif()
+
+add_subdirectory(tests)
+
+add_library(simulation_lib STATIC
+    src/Planet.cpp
+    src/Universe.cpp
+    src/utils.cpp
+    src/KeyboardHandler.cpp
+)
+target_include_directories(simulation_lib PUBLIC src)
+add_executable(simulation src/main.cpp)
+target_link_libraries(simulation PRIVATE simulation_lib)
 target_link_libraries(simulation PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(simulation PRIVATE cxx_std_17)
+
 add_compile_definitions(PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 
 if(WIN32)
