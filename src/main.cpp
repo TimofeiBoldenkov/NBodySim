@@ -2,9 +2,9 @@
 #include <iostream>
 #include <thread>
 #include <memory>
-#include "Universe.hpp"
-#include "utils.hpp"
-#include "KeyboardHandler.hpp"
+#include <Universe.hpp>
+#include <utils.hpp>
+#include <KeyboardHandler.hpp>
 
 int main()
 {

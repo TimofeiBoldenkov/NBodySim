@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cctype>
 #include <iostream>
-#include "utils.hpp"
+#include <utils.hpp>
 
 using std::string;
 using std::vector;

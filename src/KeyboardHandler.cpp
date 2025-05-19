@@ -1,4 +1,4 @@
-#include "KeyboardHandler.hpp"
+#include <KeyboardHandler.hpp>
 #include <iostream>
 
 void KeyboardHandler::update(const sf::Event& event)

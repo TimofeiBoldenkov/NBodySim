@@ -1,6 +1,6 @@
 #include <cmath>
-#include "Planet.hpp"
-#include "Vector2Utils.hpp"
+#include <Planet.hpp>
+#include <Vector2Utils.hpp>
 
 Planet::Planet(double mass_, const sf::Vector2<double>& velocity_, const sf::Vector2<double>& position_, const sf::CircleShape& shape_)
                : mass(mass_), velocity(velocity_), position(position_), shape(shape_)

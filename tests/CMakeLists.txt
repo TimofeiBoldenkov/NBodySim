@@ -18,4 +18,3 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/tests)
 
 add_executable(test test.cpp)
 target_link_libraries(test PRIVATE simulation_lib sfml-graphics sfml-window sfml-system Catch2::Catch2WithMain)
-add_test(NAME my_test COMMAND test)

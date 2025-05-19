@@ -24,19 +24,19 @@ else()
     FetchContent_MakeAvailable(SFML)
 endif()
 
-add_subdirectory(tests)
-
 add_library(simulation_lib STATIC
     src/Planet.cpp
     src/Universe.cpp
     src/utils.cpp
     src/KeyboardHandler.cpp
 )
-target_include_directories(simulation_lib PUBLIC src)
 add_executable(simulation src/main.cpp)
 target_link_libraries(simulation PRIVATE simulation_lib)
+target_include_directories(simulation_lib PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(simulation PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(simulation PRIVATE cxx_std_17)
+
+add_subdirectory(tests)
 
 add_compile_definitions(PROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 

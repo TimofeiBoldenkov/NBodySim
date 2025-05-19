@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Universe.hpp"
-#include "Vector2Utils.hpp"
+#include <Universe.hpp>
+#include <Vector2Utils.hpp>
 
 void Universe::draw(sf::RenderWindow& window) const
 {

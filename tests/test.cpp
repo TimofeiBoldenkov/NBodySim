@@ -1,5 +1,5 @@
 #include <catch2/catch_test_macros.hpp>
-#include "../src/Planet.hpp"
+#include <Planet.hpp>
 #include <SFML/Graphics.hpp>
 
 
