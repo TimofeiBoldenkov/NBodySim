@@ -9,8 +9,7 @@
 // Contains information about a key.
 // Includes a clock that measures the time since the key was last pressed, released, or clock.restart() was called,
 // and a boolean flag indicating whether the key is currently pressed.
-class KeyInfo {
-public:
+struct KeyInfo {
     sf::Clock clock;
     bool pressed;
 };
@@ -23,12 +22,12 @@ public:
     void update(const sf::Event& event);
 
     // Returns the KeyInfo of the specified sf::Keyboard::Key.
-    KeyInfo& keyInfo(sf::Keyboard::Key key) {
+    KeyInfo& getKeyInfo(sf::Keyboard::Key key) {
         return keys[key];
     }
     // Returns the KeyInfo of the specified sf::Keyboard::Key.
     // Throws an std::out_of_range exception if the key is not found in the container.
-    const KeyInfo& keyInfo(sf::Keyboard::Key key) const {
+    const KeyInfo& getKeyInfo(sf::Keyboard::Key key) const {
         return keys.at(key);
     }
 

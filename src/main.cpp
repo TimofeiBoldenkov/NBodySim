@@ -104,37 +104,37 @@ int main()
         }
         
         // The following 4 if-conditions move the view according to the button pressed
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Right); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::Right); keyInfo.pressed) {
             view.move(view.getSize().x * keyInfo.clock.restart().asSeconds() / 5, 0);
             window.setView(view);
         } 
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Left); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::Left); keyInfo.pressed) {
             view.move(-view.getSize().x * keyInfo.clock.restart().asSeconds() / 5, 0);
             window.setView(view);
         } 
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Up); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::Up); keyInfo.pressed) {
             view.move(0, -view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
             window.setView(view);
         }
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Down); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::Down); keyInfo.pressed) {
             view.move(0, view.getSize().x * keyInfo.clock.restart().asSeconds() / 5);
             window.setView(view);
         }
         // Zoom out the view if the F-button (further) is pressed
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::F); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::F); keyInfo.pressed) {
             view.zoom(1 + keyInfo.clock.restart().asSeconds());
             window.setView(view);
         }
         // Zoom in the view if the C-button (closer) is pressed
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::C); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::C); keyInfo.pressed) {
             view.zoom(1 - keyInfo.clock.restart().asSeconds());
             window.setView(view);
         }
         // Speed up the simulation 
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::Z); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::Z); keyInfo.pressed) {
             timeFactor /= 1 + keyInfo.clock.restart().asSeconds();
         }
-        if (KeyInfo& keyInfo = keyboardHandler.keyInfo(sf::Keyboard::Key::X); keyInfo.pressed) {
+        if (KeyInfo& keyInfo = keyboardHandler.getKeyInfo(sf::Keyboard::Key::X); keyInfo.pressed) {
             timeFactor *= 1 + keyInfo.clock.restart().asSeconds();
         }
 
