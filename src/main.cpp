@@ -21,8 +21,10 @@ int main()
             std::cout << "Mass of planet " << i + 1 << " (leave blank if you don't want to add any new planets): ";
             std::getline(std::cin, line);
             // Stop reading input if the line contains only the space characters.
-            if (utils::isSpace(line))
+            if (utils::isSpace(line)) {
+                std::cout << std::endl;
                 break;
+            }
             if ((words = utils::split(line)).size() != 1) {
                 throw std::invalid_argument("incorrect number of inputs");
             }
@@ -54,6 +56,13 @@ int main()
             std::clog << "Invalid input. Please enter valid data." << std::endl;
         }
     }
+
+    std::cout << std::endl;
+    std::cout << "Press X to speed up" << std::endl;
+    std::cout << "Press Z to slow down" << std::endl;
+    std::cout << "Press C or scroll the mouse wheel up to zoom in" << std::endl;
+    std::cout << "Press F or scroll the mouse wheel down to zoom out" << std::endl;
+    std::cout << "Use the arrow keys to move the view" << std::endl;
 
 
     // Window size = display size / 1.3

@@ -17,7 +17,7 @@ public:
     // Radius = mass ** (1/3) / 3 by default
     Planet(double mass, const sf::Vector2<double>& velocity, const sf::Vector2<double>& position, const sf::CircleShape& shape = sf::CircleShape());
 
-    // Draws the Planet to the specified sf::RenderWindow.
+    // Draws the Planet to the specified sf::RenderWindow if isValid() == true.
     void draw(sf::RenderWindow& window) const;
 
     // Updates the position of the Planet (as well as its shape)
@@ -72,9 +72,16 @@ public:
         shape.setPosition(Vector2Utils::convert<float>(position));
     }
 
+    // Returns false if the planet's velocity, position or mass contains non-finite values
+    // or if the planet's mass equals zero; true otherwise.
+    bool isValid() const;
+
     // Sets the Planet's velocity to a new value according to the acceleration and the elapsed time.
     // i.e., new velocity = old velocity + acceleration * elapsedTime
     void accelerate(const sf::Vector2<double>& acceleration, const sf::Time& elapsedTime);
+
+    // Updates the Planet's velocity based on the applied force and the elapsed time.
+    void applyForce(const sf::Vector2<double>& force, const sf::Time& elapsedTime);
 
 
     // Calculates the displacement vector from planet1 to planet2.
@@ -84,7 +91,8 @@ public:
     // This is equivalent to calling Vector2Utils::magnitude(displacement(planet1, planet2)).
     static double distance(const Planet& planet1, const Planet& planet2);
 
-    // Calculates the gravitational force between two planets based on the given planets and gravitational constant.
+    // Calculates the gravitational force acting on planet1 due to planet2.
+    // If the planets occupy the same position, the result will be {NaN, NaN}.
     static sf::Vector2<double> forceOfGravity(const Planet& planet1, const Planet& planet2, double G);
 
 private:

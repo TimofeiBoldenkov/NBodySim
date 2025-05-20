@@ -8,7 +8,6 @@ else()
         GIT_REPOSITORY https://github.com/catchorg/Catch2.git
         GIT_TAG v3.7.1
         GIT_SHALLOW ON
-        EXCLUDE_FROM_ALL
         SYSTEM
     )
     FetchCOntent_MakeAvailable(Catch2)
@@ -16,5 +15,8 @@ endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/tests)
 
-add_executable(test test.cpp)
-target_link_libraries(test PRIVATE simulation_lib sfml-graphics sfml-window sfml-system Catch2::Catch2WithMain)
+add_executable(planet planet.cpp)
+target_link_libraries(planet PRIVATE simulation_lib sfml-graphics sfml-window sfml-system Catch2::Catch2WithMain)
+
+add_executable(universe universe.cpp)
+target_link_libraries(universe PRIVATE simulation_lib sfml-graphics sfml-window sfml-system Catch2::Catch2WithMain)

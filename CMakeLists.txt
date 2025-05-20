@@ -18,10 +18,10 @@ else()
         GIT_REPOSITORY https://github.com/SFML/SFML.git
         GIT_TAG 2.5.1
         GIT_SHALLOW ON
-        EXCLUDE_FROM_ALL
         SYSTEM
     )
     FetchContent_MakeAvailable(SFML)
+
 endif()
 
 add_library(simulation_lib STATIC

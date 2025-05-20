@@ -8,6 +8,7 @@
 // The universe contains several planets stored in a std::vector,
 // a gravitational constant used in calculations,
 // and an internal clock used to track time during computations.
+// If a Planet in the universe is invalid (i.e., planet.isValid() == false), the Planet will not affect other planets.
 class Universe {
 public:
     // Creates an empty Universe with the specified gravitational constant.
@@ -54,17 +55,10 @@ public:
     }
 
     // Returns the force acting on the Planet specified by its iterator since the last update() call
-    sf::Vector2<double> force(std::vector<Planet>::const_iterator) const;
+    sf::Vector2<double> totalForceOnPlanet(std::vector<Planet>::const_iterator) const;
     // Returns the force acting on the Planet specified by its iterator since the last update() call
-    sf::Vector2<double> force(std::vector<Planet>::size_type i) const {
-        return force(planets.begin() + i);
-    }
-
-    // Returns the acceleration of the Planet specified by its iterator since the last update() call
-    sf::Vector2<double> acceleration(std::vector<Planet>::const_iterator iter) const;
-    // Returns the acceleration of the Planet specified by its index since the last update() call
-    sf::Vector2<double> acceleration(std::vector<Planet>::size_type i) const {
-        return acceleration(planets.begin() + i);
+    sf::Vector2<double> totalForceOnPlanet(std::vector<Planet>::size_type i) const {
+        return totalForceOnPlanet(planets.begin() + i);
     }
 
     // Returns the elapsed time since the last update() or restartClock() call

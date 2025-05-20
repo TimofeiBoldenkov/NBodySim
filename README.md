@@ -12,7 +12,7 @@ Once you've added all the planets you want, the simulation will begin. A new win
 
 Example input files can be found in the `examples` directory.
 ## Building
-The project uses CMake for building. To build the project into a build directory on your system, run the following commands:
+The project uses CMake for building. To build the project into the `build` directory on your system, run the following commands from the project's root directory:
 ```
 cmake -S . -B build
 cmake --build build
@@ -27,9 +27,9 @@ cmake -S . -B build -DUSE_SYSTEM_SFML=FALSE -DUSE_SYSTEM_CATCH2=FALSE
 cmake --build build
 ```
 ## Program's Structure
-The `Planet` class represents a planet. It has properties such as mass, velocity, position and shape. All the numerical values are stored as `double`s. The shape is used only for drawing the planet; physically, all the planets are point masses - i.e., objects that have mass but no size. A planet can be moved according to its current velocity and the elapsed time by the `update` method and drawn to a given window by the `draw` method.
+The `Planet` class represents a planet. It has properties such as mass, velocity, position and shape. All the numerical values are stored as `double`s. The shape is used only for drawing the planet; physically, all the planets are point masses - i.e., objects that have mass but no size. A planet can be moved according to its current velocity and the elapsed time by the `update` method and drawn to a given window by the `draw` method. A planet is considered invalid if its mass, velocity, or position is a non-finite value or if the mass equals to zero. The `draw` method does not draw an invalid planet.
 
-The `Universe` class represents a universe. It stores planets in a `std::vector` and contains an internal clock for tracking time, as well as the gravitational constant used in physical calculations. The class itself does not contain any window for drawing; it only maintains physical and appearance-related properties of its objects, and convenient methods for drawing to a given `SFML` window. The gravitational constant is set by the user when creating a `Universe`. The class has the `update` method that recalculates each planet's parameters (e.g. position and velocity) based on their previous state, the gravitational forces between the planets, and the time elapsed since the last `update` call. All planets can be drawn to a given window by the `draw` method.
+The `Universe` class represents a universe. It stores planets in a `std::vector` and contains an internal clock for tracking time, as well as the gravitational constant used in physical calculations. The class itself does not contain any window for drawing; it only maintains physical and appearance-related properties of its objects, and convenient methods for drawing to a given `SFML` window. The gravitational constant is set by the user when creating a `Universe`. The class has the `update` method that recalculates each planet's parameters (e.g. position and velocity) based on their previous state, the gravitational forces between the planets, and the time elapsed since the last `update` call. All planets can be drawn to a given window by the `draw` method. If a universe contains an invalid planet, the planet will not affect other planets in the universe. In other words, an invalid planet is "thrown out" of the system. Although it is not possible according to classical mechanics, a planet still may have a negative mass.
 
 The program uses an auxiliary `KeyboardHandler` class that contains information about keys - whether a key is pressed or not, and how much time has elapsed since the key was last updated. Key information can be updated using the `update` method based on a given `sf::Event` and retrieved using the `getKeyInfo` method based on a given key code.
 
