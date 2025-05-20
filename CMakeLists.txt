@@ -30,11 +30,10 @@ add_library(simulation_lib STATIC
     src/utils.cpp
     src/KeyboardHandler.cpp
 )
-target_link_libraries(simulation_lib PRIVATE sfml-graphics sfml-window sfml-system)
+target_link_libraries(simulation_lib PUBLIC sfml-graphics sfml-window sfml-system)
 add_executable(simulation src/main.cpp)
 target_link_libraries(simulation PRIVATE simulation_lib)
 target_include_directories(simulation_lib PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(simulation PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(simulation PRIVATE cxx_std_17)
 
 add_subdirectory(tests)
