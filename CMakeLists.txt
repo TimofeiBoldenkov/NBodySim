@@ -30,6 +30,7 @@ add_library(simulation_lib STATIC
     src/utils.cpp
     src/KeyboardHandler.cpp
 )
+target_link_libraries(simulation_lib PRIVATE sfml-graphics sfml-window sfml-system)
 add_executable(simulation src/main.cpp)
 target_link_libraries(simulation PRIVATE simulation_lib)
 target_include_directories(simulation_lib PUBLIC ${PROJECT_SOURCE_DIR}/include)
